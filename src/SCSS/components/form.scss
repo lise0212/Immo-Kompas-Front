@@ -1,0 +1,108 @@
+.frame{
+    background-color: $background-gray;
+    text-align: center;
+    padding-top: 175px;
+}
+
+.logo{
+    width: 60px;
+    height: auto;
+    padding-bottom: 30px;
+}
+
+.inputform{
+    background-color: $primary-white;
+    width: 25%;
+    padding: 10px 30px 25px 20px;
+    display: inline-block;
+    border-radius: 7px;
+}
+
+.large{
+    width: 75%;
+}
+
+.placeholder{
+    text-align: left;
+}
+
+.radio{
+    float: left;
+}
+
+.field, .fieldAgent{
+    width: 100%;
+    height: 30px;
+    border-radius: 7px;
+    border: 2px solid;
+    border-color: $primary-gray;
+    text-align: left;
+    float: left;
+}
+
+.fieldAgent{
+    width: 90%;
+}
+
+.price{
+    height: 30px;
+    border-radius: 7px;
+    border: 2px solid;
+    border-color: $primary-gray;
+    text-align: left;
+    float: left;
+}
+
+.column-50 {
+    float: left;
+    width: 50%;
+}
+
+.column-25 {
+    float: left;
+    width: 25%;
+}
+
+.column-33 {
+    float: left;
+    width: 33.33%;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+.link{
+    color: $primary-black;
+    padding-right: 15px;
+    border: none;
+    text-decoration: underline;
+    background-color: $primary-white;
+    cursor: pointer;
+}
+
+.button, .buttonAgent{
+    margin-top: 20px;
+    background-color: $accent-blue;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 7px;
+    color: $primary-white;
+    cursor: pointer;
+}
+
+.button:hover, .buttonAgent:hover{
+    background-color: darken($accent-blue, 10%);
+    
+}
+
+
+.buttonAgent{
+    margin-right: 10%;
+}
+
+#referral{
+    text-align: right;
+}
