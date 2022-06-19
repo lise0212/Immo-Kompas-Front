@@ -9,6 +9,7 @@
                 <li><button class="nav-list-item" @click="goToPage('register')">Registreer</button></li>
             </ul>
         </nav>
+
         <div>
             <div class="container">
                 
@@ -21,7 +22,6 @@
 
 <script>
     // export
-
     export default {
         name: "Homepage",
         methods: {

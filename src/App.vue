@@ -1,5 +1,15 @@
+<!-- <script src="https://unpkg.com/vue-router@2"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
+
+
 <template>
   <div id="app">
+    <!-- <router-link to="/">Home</router-link>
+    <router-link to="/buyer">Ik ben koper</router-link>
+
+    <router-view></router-view> -->
+
+
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <Homepage 
       v-if="page=='home'"
@@ -65,6 +75,7 @@ export default {
   data() {
     return {
       page: "home"
+      
     }
   },
   methods:{

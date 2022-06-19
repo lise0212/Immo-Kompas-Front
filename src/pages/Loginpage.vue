@@ -81,14 +81,13 @@
                     let resp = await response.json();
                     console.log(resp)
                     this.user=resp[0]
-                    console.log(this.user)
                     this.userName= this.user.name
-                    console.log(this.userName)
                     if(resp='Fail'){
                         this.errors.push('Controleer of je het juiste emailadres en paswoord gebruikt hebt en probeer het opnieuw')
                     }
                     this.showForm=false
                     this.showSucces=true
+                    this.goToPage('buyer')
                 } catch (error) {
                     console.log(error);
                 }
