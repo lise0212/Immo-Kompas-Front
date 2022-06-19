@@ -52,8 +52,6 @@ import Agentpage from "./pages/Agentpage.vue"
 import Loginpage from "./pages/Loginpage.vue"
 import Logoutpage from "./pages/Logoutpage.vue"
 import Registerpage from "./pages/Registerpage.vue"
-import Matchpage from "./pages/Matchpage.vue"
-import NavigationBar from './components/NavigationBar.vue';
 export default {
   name: 'App',
   components: {
@@ -63,7 +61,6 @@ export default {
     Loginpage,
     Logoutpage,
     Registerpage,
-    Matchpage,
 },
   data() {
     return {

@@ -2,6 +2,9 @@
     background-color: $background-gray;
     text-align: center;
     padding-top: 175px;
+    padding-bottom: 100px;
+    padding-right: 8%;
+    padding-left: 8%;
 }
 
 .logo{
@@ -12,14 +15,14 @@
 
 .inputform{
     background-color: $primary-white;
-    width: 25%;
-    padding: 10px 30px 25px 20px;
+    width: 50%;
+    padding: 30px;
     display: inline-block;
     border-radius: 7px;
 }
 
 .large{
-    width: 75%;
+    width: 85%;
 }
 
 .placeholder{
@@ -49,7 +52,6 @@
     border-radius: 7px;
     border: 2px solid;
     border-color: $primary-gray;
-    text-align: left;
     float: left;
 }
 
@@ -72,7 +74,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-  }
+}
 
 .link{
     color: $primary-black;
@@ -83,7 +85,7 @@
     cursor: pointer;
 }
 
-.button, .buttonAgent{
+.button{
     margin-top: 20px;
     background-color: $accent-blue;
     border: none;
@@ -98,9 +100,10 @@
     
 }
 
-
-.buttonAgent{
-    margin-right: 10%;
+.errorhandler{
+    text-align: left;
+    font-size: 13px;
+    color: red;
 }
 
 #referral{

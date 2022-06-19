@@ -1,0 +1,29 @@
+img{
+  border-radius: 7px;
+  width: 250px;
+  height: 160px;
+}
+
+.card{
+  text-align: center;
+}
+
+.card-text{
+  display: inline-block;
+  text-align: left;
+}
+
+ul, li{
+  list-style-type: none;
+}
+
+.resultaten{
+  display: flex;
+  flex-direction: column;
+  padding-left: 8%;
+  padding-right: 8%;
+}
+
+.container {
+  max-width: 100%;
+}

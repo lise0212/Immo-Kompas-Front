@@ -10,9 +10,10 @@
             </ul>
         </nav>
         <div>
-            <ListAgent
-                :items="agents"
-            />
+            <div class="container">
+                
+                
+            </div>
         </div>
     </div>
     
@@ -20,41 +21,13 @@
 
 <script>
     // export
-    import List from "../components/List.vue";
-    import NavigationBar from "../components/NavigationBar.vue";
-    import ListAgent from "../components/ListAgent.vue";
 
     export default {
         name: "Homepage",
-        components:{
-            List,
-            NavigationBar,
-            ListAgent
-        },
-        data(){
-            return{
-                agents: null
-
-            }
-        },
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
             },
-            // data methods
-            fetchHouses() {
-                // Get all songs
-                const url = "http://127.0.0.1:8000/api/agents";
-                fetch(url)
-                    .then((response) => {
-                        console.log(response.json())
-                        return response.json();
-                    })
-            },
-            
-            
-            },
-
-            
-        }
+        },
+    }
 </script>
