@@ -3,8 +3,8 @@
     text-align: center;
     padding-top: 175px;
     padding-bottom: 100px;
-    padding-right: 8%;
-    padding-left: 8%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .logo{
@@ -15,14 +15,15 @@
 
 .inputform{
     background-color: $primary-white;
-    width: 50%;
+    width: 35%;
     padding: 30px;
     display: inline-block;
     border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .large{
-    width: 85%;
+    width: 95%;
 }
 
 .placeholder{
@@ -33,31 +34,47 @@
     float: left;
 }
 
-.field, .fieldAgent{
+* {
+    -ms-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+  }
+
+.field, .fieldAgent, .price{
     width: 100%;
     height: 30px;
-    border-radius: 7px;
-    border: 2px solid;
+    padding: 5px 0px 5px 5px;
+    //border-radius: 7px;
+    border-style: 2px solid;
     border-color: $primary-gray;
     text-align: left;
     float: left;
+    // background-color: white;
+    // 
 }
 
-.fieldAgent{
-    width: 90%;
+
+.left{
+    width: 95%;
 }
 
-.price{
-    height: 30px;
-    border-radius: 7px;
-    border: 2px solid;
-    border-color: $primary-gray;
-    float: left;
-}
+// .fieldAgent, .price{
+//     width: 90%;
+//     float: right;
+// }
+
+// .price{
+//     height: 30px;
+//     border-radius: 7px;
+//     border: 2px solid;
+//     border-color: $primary-gray;
+//     float: left;
+// }
 
 .column-50 {
     float: left;
-    width: 50%;
+    width: 50%;    
 }
 
 .column-25 {

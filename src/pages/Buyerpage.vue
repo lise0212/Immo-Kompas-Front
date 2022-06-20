@@ -3,11 +3,12 @@
         <!-- <NavigationBar></NavigationBar> -->
         <nav class="nav">
             <ul class="nav-list">
-                <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li>
-                <li><button class="nav-list-item" @click="goToPage('buyer')">Ik ben koper</button></li>
-                <li><button class="nav-list-item" @click="goToPage('agent')">Ik ben makelaar</button></li>
-                <li><button class="nav-list-item push-right" @click="goToPage('login')">Login</button></li>
-                <li><button class="nav-list-item" @click="goToPage('register')">Registreer</button></li>
+                <li><img class="logo-nav nav-list-item-logo" src="../assets/LogoImmoKompasWit.png" alt="Logo Kleur" @click="goToPage('home')"></li>
+                <!-- <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li> -->
+                <li><button class="nav-list-item" @click="goToPage('buyer')"><b>Zoeken</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
+                <li v-show="isNotIngelogd"><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
+                <li v-show="isIngelogd"><button class="nav-list-item" @click="removeCookie()"><b>Logout</b></button></li>
             </ul>
         </nav>
         
@@ -31,20 +32,18 @@
                 <br><br>
                 <p class="placeholder">Op welke locatie wil je zoeken?</p>
                 <select class="field" v-model="location">
-                    <option disabled value="">Kies een locatie</option>
+                    <option disabled value="">Locatie</option>
                     <option v-for="(location, counter) in this.locations" :key="counter">{{location.locality}}</option>
                 </select>
                 <br><br>
-                <div class="row">
-                    <div class="column-50">
-                        <p class="placeholder">Minimum prijs</p> 
-                        <input class="price" type="number" min="0" placeholder="Vul de minimum prijs in" v-model="minPrice" required>
-                    </div>
-                    <div class="column-50">
-                        <p class="placeholder">Maximum prijs</p>
-                        <input class="price" type="number" min="0" placeholder="Vul de maximum prijs in" v-model="maxPrice" required>
+                <div class="column-50">
+                    <p class="placeholder">Minimum prijs</p> 
+                    <input class="price left" type="number" placeholder="Minimum prijs" min="0" v-model="minPrice" required>
+                </div>
+                <div class="column-50">
+                    <p class="placeholder">Maximum prijs</p>
+                    <input class="price" type="number" placeholder="Maximum prijs" min="0" v-model="maxPrice" required>
 
-                    </div>
                 </div>
                 <br>
                 <div class="errorhandler" v-if="errors.length > 0">
@@ -91,8 +90,8 @@
             return{
                 picked: null,
                 location: "",
-                minPrice: 0,
-                maxPrice: 0,
+                minPrice: '',
+                maxPrice: '',
                 houses: [],
                 recommendations: [],
                 locations: [],
@@ -101,12 +100,22 @@
                 showMatch:false,
                 showRecommendation:false,
                 showNewSearch:false,
-                showFail:false
+                showFail:false,
+                showSuccesKoper:false,
+                showSuccesMakelaar:false,
+                isIngelogd:false,
+                isNotIngelogd:false
             }
         },
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+            },
+            async getLocations() {
+                let response = await fetch("http://127.0.0.1:8000/api/housesLocality");
+                let resp = await response.json();
+                console.log(resp)
+                this.locations = resp;
             },
             submit(){
                 //check errors
@@ -137,6 +146,7 @@
                     this.showForm = false
                     this.searchMatch()
                     this.searchRecommended()
+                    //this.addSearch()
                 }
             },
             async searchMatch() {
@@ -174,6 +184,25 @@
                     console.log(error);
                 }
             },
+            async addSearch(){
+                try{
+                    let requestOptions={
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            property_type: this.picked,
+                            locality: this.location,
+                            min_price: this.minPrice,
+                            max_price: this.maxPrice
+                        })
+                    }
+                    let response = await fetch("http://127.0.0.1:8000/api/addSearch?user_id=17&email=liesje@test.com", requestOptions)
+                    let resp = await response.json();
+                    console.log(resp)
+                } catch(error){
+                    console.log(error)
+                }
+            },
             newSearch(){
                 if(!this.showMatch && !this.showRecommendation){
                     this.showFail = true
@@ -183,29 +212,38 @@
                     this.showNewSearch = true
                 }
             },
-            async getLocations() {
-                let response = await fetch("http://127.0.0.1:8000/api/housesLocality");
-                let resp = await response.json();
-                console.log(resp)
-                this.locations = resp;
-            },
             refresh(){
                 this.picked= null,
                 this.location= "",
-                this.minPrice= 0,
-                this.maxPrice= 0,
+                this.minPrice= '',
+                this.maxPrice= '',
                 this.houses= [],
                 this.recommendations= [],
-                this.locations= [],
                 this.errors= [],
                 this.showForm= true,
                 this.showMatch=false,
                 this.showRecommendation=false,
                 this.showNewSearch=false,
-                this.showFail=false
+                this.showFail=false,
+                this.showSuccesKoper=false,
+                this.showSuccesMakelaar=false
             },
+            isLoggedIN(){
+                const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
+                const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
+                console.log(ingelogd +' '+ rol)
+                this.isIngelogd=true
+                this.isNotIngelogd=false
+            },
+            removeCookie(){
+                document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                this.isIngelogd=false
+                this.isNotIngelogd=true
+            }
         },
         beforeMount() {
+            this.isLoggedIN();
             this.getLocations();
         },              
     }

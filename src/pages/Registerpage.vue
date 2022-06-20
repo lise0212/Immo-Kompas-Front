@@ -3,25 +3,32 @@
         <!-- <NavigationBar></NavigationBar> -->
         <nav class="nav">
             <ul class="nav-list">
-                <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li>
-                <li><button class="nav-list-item" @click="goToPage('buyer')">Ik ben koper</button></li>
-                <li><button class="nav-list-item" @click="goToPage('agent')">Ik ben makelaar</button></li>
-                <li><button class="nav-list-item push-right" @click="goToPage('login')">Login</button></li>
-                <li><button class="nav-list-item" @click="goToPage('register')">Registreer</button></li>
+                <li><img class="logo-nav nav-list-item-logo" src="../assets/LogoImmoKompasWit.png" alt="Logo Kleur" @click="goToPage('home')"></li>
+                <!-- <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li> -->
+                <li><button class="nav-list-item" @click="goToPage('buyer')"><b>Zoeken</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
             </ul>
         </nav>
         <div class="frame">
             <img class="logo" src="../assets/LogoImmoKompas.png" alt="Logo Kleur">
             <br>
-            <div class="inputform">
+            <div class="succes" v-show="showSuccesKoper===true">
+                <h1>Welkom {{this.userName}}</h1>
+                <p>Je wordt zo dadelijk doorgestuurd naar de pagin om een match te zoeken.</p>
+            </div>
+            <div class="inputform" v-show="showForm===true">
                 <p class="placeholder">Naam</p>
-                <input class="field" type="text" placeholder="Typ hier je naam" v-model="naam" required>
+                <input class="field" type="text" placeholder="Naam" v-model="naam" required>
                 <br><br>
-                <p class="placeholder">Email</p>
-                <input class="field" type="email" placeholder="Typ hier je email" v-model="email" required>
+                <p class="placeholder">E-mail</p>
+                <input class="field" type="email" placeholder="E-mailadres" v-model="email" required>
                 <br><br>
                 <p class="placeholder">Paswoord</p>
-                <input class="field" type="password" placeholder="Type hier je paswoord" v-model="paswoord" required>
+                <input class="field" type="password" placeholder="Paswoord" v-model="paswoord" required>
+                <br><br>
+                <p class="placeholder">Bevestig paswoord</p>
+                <input class="field" type="password" placeholder="Bevestig paswoord" v-model="bevestigPaswoord" required>
                 <br><br><br>
                 <div class="errorhandler" v-if="errors.length > 0">
                     <span v-for="error in errors" :key="error">
@@ -50,14 +57,20 @@
                 email:'',
                 paswoord:'',
                 errors:[],
-                emails:[]
+                emails:[],
+                showSuccesKoper:false,
+                user:[],
+                userName:'',
+                userRole:'',
+                bevestigPaswoord:'',
+                showForm:true
             }
         },
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
             },
-            submit(){
+            async submit(){
                 this.errors=[];
                 if(!this.naam){
                     this.errors.push('Vul een naam in')
@@ -93,8 +106,17 @@
                         this.errors.push('Het paswoord moet minstens 1 speciaal karakter bevatten')
                     }
                 }
+                if(!this.bevestigPaswoord){
+                    this.errors.push('Bevestig je paswoord')
+                }
+                if(this.bevestigPaswoord){
+                    if(this.bevestigPaswoord != this.paswoord){
+                        this.errors.push('Paswoorden komen niet overeen')
+                    }
+                }
                 if(this.errors.length==0){
-                    this.postUser()
+                    await this.postUser()
+                    await this.getUser()
                 }
             },
             async getEmails() {
@@ -115,12 +137,11 @@
                         })
                     }
                     let response = await fetch("http://127.0.0.1:8000/api/register", requestOptions)
-                    let resp = await response.json();
-                    console.log(resp)
+                    this.resp = await response.json();
+                    console.log(this.resp)
                 } catch(error){
                     console.log(error)
                 }
-                this.goToPage('buyer')
             },     
             ifExists(){
                 for(var i=0; i<this.emails.length; i++){
@@ -128,7 +149,30 @@
                         this.errors.push('Er bestaat al een account met dit emailadres')
                     }
                 }
-            }
+            },
+            async getUser(){
+                try {
+                    let url = "http://127.0.0.1:8000/api/getUser?email="+this.email
+                    console.log(url)
+                    let response = await fetch(url);
+                    let resp = await response.json();
+                    console.log(resp)
+                    this.user=resp[0]
+                    this.userName= this.user.name
+                    this.userRole = this.user.role
+                    document.cookie="ingelogd=true"
+                    document.cookie="rol="+this.userRole
+                    const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
+                    if(ingelogd=='true'){
+                        this.showForm=false
+                        this.showSuccesKoper=true
+                        setTimeout(()=> this.goToPage('buyer'), 4000) 
+                    }
+                    
+                } catch (error) {
+                    console.log(error);
+                }
+            },
         },
         beforeMount() {
             this.getEmails();

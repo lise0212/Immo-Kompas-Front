@@ -1,11 +1,25 @@
 img{
-  border-radius: 7px;
+  border-radius: 7px 7px 0px 0px;
   width: 250px;
   height: 160px;
 }
 
 .card{
+  width: 250px;
+  border-radius: 7px;
   text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 10px;
+  
+}
+
+.block{
+  margin-right: 5%;
+  margin-left: 7.5%;
+}
+
+.details{
+  padding: 10px;
 }
 
 .card-text{
@@ -20,10 +34,46 @@ ul, li{
 .resultaten{
   display: flex;
   flex-direction: column;
-  padding-left: 8%;
-  padding-right: 8%;
+  margin: auto;
+  text-align: center;
+  
+  
 }
 
 .container {
   max-width: 100%;
+  text-align: center;
+}
+
+a{
+  color: $accent-blue;
+  text-decoration: none;
+}
+
+a:hover{
+  color: darken($accent-blue, 10%);
+  text-decoration: none;
+}
+
+.like, .liked{
+  background-color: $background-gray;
+  padding: 0;
+  border: none;
+}
+.like:hover{
+  cursor: pointer;
+
+  .heart{
+    color: red;
+  }
+}
+
+.liked{
+  cursor: pointer;
+}
+
+.liked{
+  .heart{
+    color: red;
+  }
 }

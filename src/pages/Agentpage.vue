@@ -3,11 +3,12 @@
         <!-- <NavigationBar></NavigationBar> -->
         <nav class="nav">
             <ul class="nav-list">
-                <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li>
-                <li><button class="nav-list-item" @click="goToPage('buyer')">Ik ben koper</button></li>
-                <li><button class="nav-list-item" @click="goToPage('agent')">Ik ben makelaar</button></li>
-                <li><button class="nav-list-item push-right" @click="goToPage('login')">Login</button></li>
-                <li><button class="nav-list-item" @click="goToPage('register')">Registreer</button></li>
+                <li><img class="logo-nav nav-list-item-logo" src="../assets/LogoImmoKompasWit.png" alt="Logo Kleur" @click="goToPage('home')"></li>
+                <!-- <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li> -->
+                <li><button class="nav-list-item" @click="goToPage('buyer')"><b>Zoeken</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
+                <li v-show="isNotIngelogd"><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
+                <li v-show="isIngelogd"><button class="nav-list-item" @click="removeCookie()"><b>Logout</b></button></li>
             </ul>
         </nav>
         <div class="frame">
@@ -39,8 +40,8 @@
                         <label class="radio" for="nietZwembad">Nee</label>
                     </div>
                     <div class="column-33">
-                        <p class="placeholder">Oppervlakte van de woning?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="woningOpp">
+                        <p class="placeholder">Oppervlakte woning?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte woning" type="number" min="0" v-model="woningOpp">
                     </div>
                 </div>
                 <div class="row">
@@ -54,14 +55,14 @@
                     </div>
                     <div class="column-33">
                         <p class="placeholder">Subtype van de woning?</p>
-                        <select class="fieldAgent" v-model="selectedSubtype" id="subtype">
-                            <option disabled value="">Kies een subtype</option>
+                        <select class="fieldAgent left" v-model="selectedSubtype" id="subtype">
+                            <option disabled value="">Subtype</option>
                             <option v-for="(subtype, counter) in this.subtypes" :key="counter">{{subtype.subtype_of_property}}</option>
                         </select>
                     </div>
                     <div class="column-33">
-                        <p class="placeholder">Oppervlakte van de landbouwgrond?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="landbouwOpp">
+                        <p class="placeholder">Oppervlakte landbouwgrond?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte landbouwgrond" type="number" min="0" v-model="landbouwOpp">
                     </div>
                 </div>
                 <div class="row">
@@ -75,41 +76,15 @@
                     </div>
                     <div class="column-33">
                         <p class="placeholder">Locatie van de woning?</p>
-                        <select class="fieldAgent" v-model="selectedLocatie" id="locatie">
-                            <option disabled value="">Kies de locatie</option>
+                        <select class="fieldAgent left" v-model="selectedLocatie" id="locatie">
+                            <option disabled value="">Locatie</option>
                             <option v-for="(locationsBelgium, counter) in this.locationsBelgium" :key="counter">{{locationsBelgium.location}}</option>
                         </select>
                     </div>
                     <div class="column-33">
-                        <p class="placeholder">Oppervlakte van de bouwgrond?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="bouwgrondOpp">
+                        <p class="placeholder">Oppervlakte bouwgrond?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte bouwgrond" type="number" min="0" v-model="bouwgrondOpp">
                     </div>                    
-                </div>
-                <div class="row">
-                    <div class="column-33">
-                        <p class="placeholder">Tuin aanwezig?</p>
-                        <input class="radio" type="radio" id="tuin" value='Ja' v-model="showTuin">
-                        <label class="radio" for="tuin">Ja</label>
-                        <br>
-                        <input class="radio" type="radio" id="nietTuin" value='Nee' v-model="showTuin">
-                        <label class="radio" for="nietTuin">Nee</label>
-                    </div>
-                    <div class="column-33">
-                        <p class="placeholder">Staat van de woning?</p>
-                        <select class="fieldAgent" v-model="selectedStaat" id="staat">
-                            <option disabled value="">Kies de staat</option>
-                            <option v-for="(state, counter) in this.states" :key="counter">{{state.building_state}}</option>
-                        </select>
-                    </div>
-                    <div class="column-33" v-show="pickedType==='Huis'">
-                        <p class="placeholder">Aantal gevels van de woning?</p>
-                        <select class="fieldAgent" v-model="selectedGevels" id="gevels">
-                            <option disabled value="">Kies het aantal gevels</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="column-33">
@@ -121,12 +96,38 @@
                         <label class="radio" for="nietTerras">Nee</label>
                     </div>
                     <div class="column-33">
-                        <p class="placeholder">Prijs van de woning?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="prijs">
+                        <p class="placeholder">Staat van de woning?</p>
+                        <select class="fieldAgent left" v-model="selectedStaat" id="staat">
+                            <option disabled value="">Staat</option>
+                            <option v-for="(state, counter) in this.states" :key="counter">{{state.building_state}}</option>
+                        </select>
                     </div>
-                    <div class="column-33" v-show="showTuin==='Ja'">
-                        <p class="placeholder">Oppervlakte van de tuin?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="tuinOpp">
+                    <div class="column-33" v-show="pickedType==='Huis'">
+                        <p class="placeholder">Aantal gevels van de woning?</p>
+                        <select class="fieldAgent" v-model="selectedGevels" id="gevels">
+                            <option disabled value="">Aantal gevels</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column-33">
+                        <p class="placeholder">Tuin aanwezig?</p>
+                        <input class="radio" type="radio" id="tuin" value='Ja' v-model="showTuin">
+                        <label class="radio" for="tuin">Ja</label>
+                        <br>
+                        <input class="radio" type="radio" id="nietTuin" value='Nee' v-model="showTuin">
+                        <label class="radio" for="nietTuin">Nee</label>
+                    </div>
+                    <div class="column-33">
+                        <p class="placeholder">Prijs van de woning?</p>
+                        <input class="fieldAgent left" type="number" min="0" placeholder="Prijs" v-model="prijs">
+                    </div>
+                    <div class="column-33" v-show="showTerras==='Ja'">
+                        <p class="placeholder">Oppervlakte terras?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte terras" type="number" min="0" v-model="terrasOpp">
                     </div>
                 </div>
                 <div class="row">
@@ -140,11 +141,11 @@
                     </div>
                     <div class="column-33">
                         <p class="placeholder">Aantal kamers?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="kamers">
+                        <input class="fieldAgent left" type="number" placeholder="Aantal kamers" min="0" v-model="kamers">
                     </div>
-                    <div class="column-33" v-show="showTerras==='Ja'">
-                        <p class="placeholder">Oppervlakte van het terras?</p>
-                        <input class="fieldAgent" type="number" min="0" v-model="terrasOpp">
+                    <div class="column-33" v-show="showTuin==='Ja'">
+                        <p class="placeholder">Oppervlakte tuin?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte tuin" type="number" min="0" v-model="tuinOpp">
                     </div>
                 </div>
                 <br><br>
@@ -180,23 +181,22 @@
                 selectedLocatie: '',
                 selectedStaat: '',
                 selectedGevels: '',
-                prijs:0,
-                kamers:0,
-                woningOpp:0,
-                tuinOpp:0,
-                terrasOpp:0,
-                bouwgrondOpp:0,
-                landbouwOpp:0,
-                states:[],
-                subtypes:[],
+                prijs:'',
+                kamers:'',
+                woningOpp:'',
+                tuinOpp:'',
+                terrasOpp:'',
+                bouwgrondOpp:'',
+                landbouwOpp:'',
                 errors:[],
-                locationsBelgium:[],
                 showTuin:false,
                 showTerras:false,
                 showForm:true,
                 showSucces:false,
                 showNewHouse:false,
                 houseID:0,
+                isIngelogd:false,
+                isNotIngelogd:true
             }
         },
         
@@ -324,7 +324,6 @@
                     }
                     let response = await fetch("http://127.0.0.1:8000/api/addHouse?estate_agent_id=5", requestOptions)
                     let houseID = await response.json();
-                    console.log(typeof houseID)
                     this.postSpecification(houseID)
                 } catch(error){
                     console.log(error)
@@ -413,13 +412,13 @@
                 this.selectedLocatie= '',
                 this.selectedStaat= '',
                 this.selectedGevels= '',
-                this.prijs=0,
-                this.kamers=0,
-                this.woningOpp=0,
-                this.tuinOpp=0,
-                this.terrasOpp=0,
-                this.bouwgrondOpp=0,
-                this.landbouwOpp=0,
+                this.prijs='',
+                this.kamers='',
+                this.woningOpp='',
+                this.tuinOpp='',
+                this.terrasOpp='',
+                this.bouwgrondOpp='',
+                this.landbouwOpp='',
                 this.states=[],
                 this.subtypes=[],
                 this.errors=[],
@@ -428,10 +427,30 @@
                 this.showTerras=false,
                 this.showForm=true,
                 this.showSucces=false,
-                this.showNewHouse=false
+                this.showNewHouse=false,
+                this.showSuccesKoper=false,
+                this.showSuccesMakelaar=false
+            },
+            isLoggedIN(){
+                const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
+                const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
+                console.log(ingelogd +' '+ rol)
+                this.isIngelogd=true
+                this.isNotIngelogd=false
+                if(ingelogd!='true' && rol!="makelaar"){
+                    alert('Je bent niet geauthoriseerd om deze pagina te bekijken.\nMeld je aan of neem contact op met info@immokompas.be')
+                    this.goToPage('login')
+                }
+            },
+            removeCookie(){
+                document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                 this.isIngelogd=false
+                this.isNotIngelogd=true
             }
         },
         beforeMount() {
+            this.isLoggedIN();
             this.getSubtypes();
             this.getStates();
             this.getLocationsBelgium();
