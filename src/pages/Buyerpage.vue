@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="main">
         <!-- <NavigationBar></NavigationBar> -->
         <nav class="nav">
             <ul class="nav-list">
@@ -74,6 +74,17 @@
                 <button class="button" v-show="showNewSearch===true" @click="refresh()">NIEUWE ZOEKOPDRACHT</button>
             </div>
         </div>
+        <div class="footer">
+            <div class="column-50-footer">
+                <button class="button-footer" @click="goToPage('buyer')"><b>Zoeken</b></button>
+                <button class="button-footer" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button>
+                <button v-show="isNotIngelogd" class="button-footer" @click="goToPage('login')"><b>Login</b></button>
+                <button v-show="isIngelogd" class="button-footer" @click="removeCookie()"><b>Logout</b></button>
+            </div>
+            <div class="column-50-footer logo-footer">
+                <img @click="goToPage('home')" class="logoVolledig" src="../assets/LogoGroot.png" alt="LogoGroot">
+            </div>
+        </div> 
     </div>
 </template>
 
@@ -252,6 +263,7 @@
                 document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "agentID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 this.isIngelogd=false
                 this.isNotIngelogd=true
             }

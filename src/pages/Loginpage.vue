@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="main">
         <!-- <NavigationBar></NavigationBar> -->
         <nav class="nav">
             <ul class="nav-list">
@@ -54,6 +54,17 @@
                 </div>
             </div>
         </div>
+        <div class="footer">
+            <div class="column-50-footer">
+                <button class="button-footer" @click="goToPage('buyer')"><b>Zoeken</b></button>
+                <button class="button-footer" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button>
+                <button v-show="isNotIngelogd" class="button-footer" @click="goToPage('login')"><b>Login</b></button>
+                <button v-show="isIngelogd" class="button-footer" @click="removeCookie()"><b>Logout</b></button>
+            </div>
+            <div class="column-50-footer logo-footer">
+                <img @click="goToPage('home')" class="logoVolledig" src="../assets/LogoGroot.png" alt="LogoGroot">
+            </div>
+        </div> 
     </div>
     
 </template>
@@ -75,8 +86,7 @@
                 userID:'',
                 isIngelogd:false,
                 isNotIngelogd:true,
-
-                // showPassword:false
+                agentID:''
             }
         },
         methods: {
@@ -128,6 +138,7 @@
                             setTimeout(()=> this.goToPage('buyer'), 4000) 
                         }
                         else{
+                            await this.getAgent()
                             this.showSuccesMakelaar=true
                             setTimeout(()=> this.goToPage('agent'), 4000)               
                         }
@@ -141,10 +152,24 @@
                     this.errors.push('Controleer of je het juiste emailadres en paswoord gebruikt hebt en probeer het opnieuw')
                 }
             },
+            async getAgent(){
+                try {
+                    let url = "http://127.0.0.1:8000/api/agentByName?name="+this.userName
+                    console.log(url)
+                    let response = await fetch(url);
+                    this.agent = await response.json();
+                    console.log(this.agent)
+                    this.agentID= this.agent[0].id
+                    document.cookie="agentID="+this.agentID
+                    } catch (error) {
+                    console.log(error);
+                }   
+            },
             removeCookie(){
                 document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "agentID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 this.isIngelogd=false
                 this.isNotIngelogd=true
             }
