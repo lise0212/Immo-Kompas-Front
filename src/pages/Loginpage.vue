@@ -7,7 +7,9 @@
                 <!-- <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li> -->
                 <li><button class="nav-list-item" @click="goToPage('buyer')"><b>Zoeken</b></button></li>
                 <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
-                <li><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
+                <li v-show="isNotIngelogd"><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
+                <li v-show="isIngelogd"><button class="nav-list-item" @click="removeCookie()"><b>Logout</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('contact')"><b>Contact</b></button></li>
             </ul>
         </nav>
         <div class="frame">
@@ -15,7 +17,7 @@
             <br>
             <div class="succes" v-show="showSuccesKoper===true">
                 <h1>Welkom terug {{this.userName}}</h1>
-                <p>Je wordt zo dadelijk doorgestuurd naar de pagin om een match te zoekn.</p>
+                <p>Je wordt zo dadelijk doorgestuurd naar de pagina om een match te zoeken.</p>
             </div>
             <div class="succes" v-show="showSuccesMakelaar===true">
                 <h1>Welkom terug {{this.userName}}</h1>
@@ -26,7 +28,12 @@
                 <input class="field" type="email" placeholder="E-mailadres" v-model="email" required >
                 <br><br>
                 <p class="placeholder">Paswoord</p>
-                <input  class="field" type="password" placeholder="Paswoord" v-model="paswoord" required>
+                <!-- <div class="input-group"> -->
+                    <input  class="field" type="password" placeholder="Paswoord" v-model="paswoord" required>
+                    <!-- <button class="input-group-icon" @click="togglePassword">
+                        {{ toggleBtnIcon }}
+                    </button>
+                </div> -->
                 <!-- <input v-else class="field" type="password" placeholder="Paswoord" v-model="password" required //v-if="showPassword"> -->
                 <!--<div class="control">
                     <button class="button" @click="toggleShow">
@@ -64,12 +71,20 @@
                 showSuccesMakelaar:false,
                 userName:'',
                 user:[],
-                userRole:''
+                userRole:'',
+                userID:'',
+                isIngelogd:false,
+                isNotIngelogd:true,
+
+                // showPassword:false
             }
         },
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+            },
+            togglePassword(){
+                this.showPassword = !this.showPassword;
             },
             submit(){
                 this.errors=[];
@@ -97,6 +112,7 @@
                     console.log(this.user)
                     this.userName= this.user.name
                     this.userRole = this.user.role
+                    this.userID = this.user.id
                     if(this.user==='Fail'){
                         this.errors.push('Controleer of je het juiste emailadres en paswoord gebruikt hebt en probeer het opnieuw')
                     }
@@ -104,7 +120,9 @@
                         this.showForm=false
                         document.cookie="ingelogd=true"
                         document.cookie="rol="+this.userRole
+                        document.cookie="userID="+this.userID
                         const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
+                        const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
                         if(rol==='koper'){
                             this.showSuccesKoper=true
                             setTimeout(()=> this.goToPage('buyer'), 4000) 
@@ -113,12 +131,32 @@
                             this.showSuccesMakelaar=true
                             setTimeout(()=> this.goToPage('agent'), 4000)               
                         }
+                        if(ingelogd=='true'){
+                            this.isIngelogd=true,
+                            this.isNotIngelogd=false
+                        }
                     }
                 } catch (error) {
                     console.log(error);
+                    this.errors.push('Controleer of je het juiste emailadres en paswoord gebruikt hebt en probeer het opnieuw')
                 }
+            },
+            removeCookie(){
+                document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                this.isIngelogd=false
+                this.isNotIngelogd=true
             }
-        }
+        },
+        // computed:{
+        //     inputType() {
+        //         return this.showPassword ? "text" : "password";
+        //     },
+        //     toggleBtnIcon() {
+        //         return this.showPassword ? "🐵" : "🙈";
+        //     }
+        // }
     
 }
 </script>

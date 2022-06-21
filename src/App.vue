@@ -34,20 +34,19 @@
       @change-page="goToPage"
     />
 
-    <Logoutpage 
-      v-if="page=='logout'"
-
-      @change-page="goToPage"
-    />
-
     <Registerpage 
       v-if="page=='register'"
 
       @change-page="goToPage"
     />
 
-    <Matchpage 
-      v-if="page=='match'"
+    <Contactpage 
+      v-if="page=='contact'"
+
+      @change-page="goToPage"
+    />
+    <Tipspage 
+      v-if="page=='tips'"
 
       @change-page="goToPage"
     />
@@ -60,8 +59,9 @@ import Homepage from "./pages/Homepage.vue"
 import Buyerpage from "./pages/Buyerpage.vue"
 import Agentpage from "./pages/Agentpage.vue"
 import Loginpage from "./pages/Loginpage.vue"
-import Logoutpage from "./pages/Logoutpage.vue"
 import Registerpage from "./pages/Registerpage.vue"
+import Contactpage from "./pages/Contactpage.vue"
+import Tipspage from "./pages/Tipspage.vue"
 export default {
   name: 'App',
   components: {
@@ -69,8 +69,9 @@ export default {
     Buyerpage,
     Agentpage,
     Loginpage,
-    Logoutpage,
     Registerpage,
+    Contactpage,
+    Tipspage
 },
   data() {
     return {

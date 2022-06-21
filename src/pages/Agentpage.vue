@@ -9,6 +9,7 @@
                 <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
                 <li v-show="isNotIngelogd"><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
                 <li v-show="isIngelogd"><button class="nav-list-item" @click="removeCookie()"><b>Logout</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('contact')"><b>Contact</b></button></li>
             </ul>
         </nav>
         <div class="frame">
@@ -196,7 +197,10 @@
                 showNewHouse:false,
                 houseID:0,
                 isIngelogd:false,
-                isNotIngelogd:true
+                isNotIngelogd:false,
+                states:[],
+                subtypes:[],
+                locationsBelgium:[]
             }
         },
         
@@ -435,18 +439,30 @@
                 const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
                 const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
                 console.log(ingelogd +' '+ rol)
-                this.isIngelogd=true
-                this.isNotIngelogd=false
+                if(ingelogd=='true'){
+                    this.isIngelogd=true
+                    this.isNotIngelogd=false
+                }
+                else{
+                    this.isIngelogd=false
+                    this.isNotIngelogd=true
+                }
                 if(ingelogd!='true' && rol!="makelaar"){
                     alert('Je bent niet geauthoriseerd om deze pagina te bekijken.\nMeld je aan of neem contact op met info@immokompas.be')
                     this.goToPage('login')
                 }
+
             },
             removeCookie(){
                 document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                 this.isIngelogd=false
+                document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                this.isIngelogd=false
                 this.isNotIngelogd=true
+                if(ingelogd!='true' && rol!="makelaar"){
+                    alert('Je bent niet geauthoriseerd om deze pagina te bekijken.\nMeld je aan of neem contact op met info@immokompas.be')
+                    this.goToPage('login')
+                }
             }
         },
         beforeMount() {

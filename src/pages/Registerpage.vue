@@ -7,7 +7,9 @@
                 <!-- <li><button class="nav-list-item" @click="goToPage('home')">Home</button></li> -->
                 <li><button class="nav-list-item" @click="goToPage('buyer')"><b>Zoeken</b></button></li>
                 <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
-                <li><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
+                <li v-show="isNotIngelogd"><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
+                <li v-show="isIngelogd"><button class="nav-list-item" @click="removeCookie()"><b>Logout</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('contact')"><b>Contact</b></button></li>
             </ul>
         </nav>
         <div class="frame">
@@ -15,7 +17,7 @@
             <br>
             <div class="succes" v-show="showSuccesKoper===true">
                 <h1>Welkom {{this.userName}}</h1>
-                <p>Je wordt zo dadelijk doorgestuurd naar de pagin om een match te zoeken.</p>
+                <p>Je wordt zo dadelijk doorgestuurd naar de pagina om een match te zoeken.</p>
             </div>
             <div class="inputform" v-show="showForm===true">
                 <p class="placeholder">Naam</p>
@@ -37,7 +39,7 @@
                 </div>
                 <div id="referral">
                     <button class="link" @click="goToPage('login')">Heb je al een account?</button>
-                    <button class="button" @click="[submit()]">REGISTREER</button>
+                    <button class="button" @click="submit()">REGISTREER</button>
                 </div>
             </div>
         </div>
@@ -63,7 +65,10 @@
                 userName:'',
                 userRole:'',
                 bevestigPaswoord:'',
-                showForm:true
+                showForm:true,
+                userID:'',
+                isIngelogd:false,
+                isNotIngelogd:false,
             }
         },
         methods: {
@@ -160,12 +165,16 @@
                     this.user=resp[0]
                     this.userName= this.user.name
                     this.userRole = this.user.role
+                    this.userID=this.user.id
                     document.cookie="ingelogd=true"
                     document.cookie="rol="+this.userRole
+                    document.cookie="userID="+this.userID
                     const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
                     if(ingelogd=='true'){
                         this.showForm=false
                         this.showSuccesKoper=true
+                        this.isIngelogd=true,
+                        this.isNotIngelogd=false,
                         setTimeout(()=> this.goToPage('buyer'), 4000) 
                     }
                     
@@ -173,6 +182,13 @@
                     console.log(error);
                 }
             },
+            removeCookie(){
+                document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                this.isIngelogd=false
+                this.isNotIngelogd=true
+            }
         },
         beforeMount() {
             this.getEmails();

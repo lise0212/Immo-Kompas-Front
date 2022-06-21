@@ -9,6 +9,7 @@
                 <li><button class="nav-list-item" @click="goToPage('agent')"><b>Zoekertje plaatsen</b></button></li>
                 <li v-show="isNotIngelogd"><button class="nav-list-item" @click="goToPage('login')"><b>Login</b></button></li>
                 <li v-show="isIngelogd"><button class="nav-list-item" @click="removeCookie()"><b>Logout</b></button></li>
+                <li><button class="nav-list-item" @click="goToPage('contact')"><b>Contact</b></button></li>
             </ul>
         </nav>
         
@@ -38,11 +39,11 @@
                 <br><br>
                 <div class="column-50">
                     <p class="placeholder">Minimum prijs</p> 
-                    <input class="price left" type="number" placeholder="Minimum prijs" min="0" v-model="minPrice" required>
+                    <input class="priceInput left" type="number" placeholder="Minimum prijs" min="0" v-model="minPrice" required>
                 </div>
                 <div class="column-50">
                     <p class="placeholder">Maximum prijs</p>
-                    <input class="price" type="number" placeholder="Maximum prijs" min="0" v-model="maxPrice" required>
+                    <input class="priceInput" type="number" placeholder="Maximum prijs" min="0" v-model="maxPrice" required>
 
                 </div>
                 <br>
@@ -63,7 +64,7 @@
                     />
                 </div>
                 <div class="container" v-if="showRecommendation">
-                    <h1> Misschien ook interessant voor jou</h1>
+                    <h1> Misschien vind je dit ook interessant</h1>
                     <ListRecommendation 
                         :items=recommendations
                     />
@@ -146,7 +147,11 @@
                     this.showForm = false
                     this.searchMatch()
                     this.searchRecommended()
-                    //this.addSearch()
+                    const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
+                    const userID = ('; '+document.cookie).split("; userID=").pop().split(';')[0];
+                    if(ingelogd=='true'){
+                        this.addSearch(userID)
+                    }
                 }
             },
             async searchMatch() {
@@ -184,7 +189,8 @@
                     console.log(error);
                 }
             },
-            async addSearch(){
+            async addSearch(userID){
+                //const userID = ('; '+document.cookie).split("; userID=").pop().split(';')[0];
                 try{
                     let requestOptions={
                         method: "POST",
@@ -193,10 +199,11 @@
                             property_type: this.picked,
                             locality: this.location,
                             min_price: this.minPrice,
-                            max_price: this.maxPrice
+                            max_price: this.maxPrice,
+                            user_id: userID
                         })
                     }
-                    let response = await fetch("http://127.0.0.1:8000/api/addSearch?user_id=17&email=liesje@test.com", requestOptions)
+                    let response = await fetch("http://127.0.0.1:8000/api/addSearch?", requestOptions)
                     let resp = await response.json();
                     console.log(resp)
                 } catch(error){
@@ -230,14 +237,21 @@
             },
             isLoggedIN(){
                 const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
-                const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
-                console.log(ingelogd +' '+ rol)
-                this.isIngelogd=true
-                this.isNotIngelogd=false
+                // const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
+                // console.log(ingelogd +' '+ rol)
+                if(ingelogd=='true'){
+                    this.isIngelogd=true
+                    this.isNotIngelogd=false
+                }
+                else{
+                    this.isIngelogd=false
+                    this.isNotIngelogd=true
+                }
             },
             removeCookie(){
                 document.cookie = "ingelogd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 document.cookie = "rol=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 this.isIngelogd=false
                 this.isNotIngelogd=true
             }

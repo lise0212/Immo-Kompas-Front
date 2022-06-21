@@ -1,0 +1,161 @@
+.logoVolledig{
+    max-width: 100%;
+    height: auto;
+}
+
+.frameHome{
+    background-color: $background-gray;
+    text-align: center;
+    padding-top: 100px;
+    margin-left: 9%;
+    margin-right: 9%;
+
+}
+
+.header {
+    height: 100vh;
+    background-image: 
+    linear-gradient(to right bottom, 
+   rgba(76, 216, 255, 0.8),
+   rgba(30, 108, 217, 0.8)),
+   url('https://cdn.pixabay.com/photo/2016/10/06/17/28/architecture-1719526_960_720.jpg');
+    
+    background-size: cover;
+    background-position: top;
+    position: relative;
+
+    clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%); //voor afkapping
+}
+
+.text-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.heading-primary {
+    color: $primary-white;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+
+.heading-primary-main {
+    display: block;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 3px;
+}
+
+.heading-primary-sub {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 5px;
+}
+
+.button-header{
+    background-color: $accent-orange;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    color: $primary-white;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+}
+
+.button-header:hover{
+    background-color: $primary-white;
+    color: $accent-orange;    
+}
+
+* {
+	box-sizing: content-box;
+}
+
+body {
+	background-color: #f6f5f7;
+	font-family: 'Open Sans', sans-serif;
+	margin-bottom: 50px;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.box-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.box {
+	background-color: $primary-white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 7px;
+	flex: 1;
+	padding: 0 30px 30px;
+	margin: 2%;
+	min-width: 250px;
+    height: auto;
+}
+
+.box h4 {
+	text-transform: uppercase;
+}
+
+.features-list {
+	padding: 0;
+	list-style-type: none;
+}
+
+.features-list li {
+	font-weight: 100;
+	padding: 12px 0;
+	font-weight: 100;
+}
+
+.features-list li:not(:last-of-type) {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.banner{
+    margin-top: 100px;
+    padding: 50px 0px;
+    background-color: $accent-orange;
+    color: $primary-white;
+    padding-left: 9%;
+    padding-right: 9%;
+
+}
+
+.button-banner{
+    background-color: $accent-blue;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    color: $primary-white;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    text-align: right;
+    float: right;
+}
+
+.button-banner:hover{
+    background-color: $primary-white;
+    color: $accent-orange;    
+}
+
+.column-50-banner{
+    width: 50%;
+    display: inline-block;
+    text-align: left;
+}
