@@ -122,6 +122,8 @@
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
+
             },
             async getLocations() {
                 let response = await fetch("http://127.0.0.1:8000/api/housesLocality");

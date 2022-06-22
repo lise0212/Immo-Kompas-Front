@@ -12,6 +12,7 @@
                 <li><button class="nav-list-item" @click="goToPage('contact')"><b>Contact</b></button></li>
             </ul>
         </nav>
+
         <div class="frame">
             <img class="logo" src="../assets/LogoImmoKompas.png" alt="Logo Kleur">
             <br>
@@ -22,152 +23,220 @@
                 <br><br>
                 <button class="button" @click="refresh()" >NIEUW HUIS TOEVOEGEN</button>
             </div>
-            <div class="inputform large" v-if="showForm">
-                <form action="..\src\assets\php\uploadfiles.php">
-                    <div class="row">
-                        <div class="column-33">
-                            <p class="placeholder">Type woning?</p>
-                            <input class="radio" type="radio" id="appartement" value="Appartement" v-model="pickedType">
-                            <label class="radio" for="appartement">Appartement</label>
-                            <br>
-                            <input class="radio" type="radio" id="huis" value="Huis" v-model="pickedType">
-                            <label class="radio" for="huis">Huis</label>                        
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Zwembad aanwezig?</p>
-                            <input class="radio" type="radio" id="zwembad" value="Ja" v-model="pickedZwembad">
-                            <label class="radio" for="zwembad">Ja</label>
-                            <br>
-                            <input class="radio" type="radio" id="nietZwembad" value="Nee" v-model="pickedZwembad">
-                            <label class="radio" for="nietZwembad">Nee</label>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Oppervlakte woning?</p>
-                            <input class="fieldAgent" placeholder="Oppervlakte woning" type="number" min="0" v-model="woningOpp">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="column-33">
-                            <p class="placeholder">Bemeubeld?</p>
-                            <input class="radio" type="radio" id="bemeubeld" value="Ja" v-model="pickedBemeubeld">
-                            <label class="radio" for="bemeubeld">Ja</label>
-                            <br>
-                            <input class="radio" type="radio" id="nietBemeubeld" value="Nee" v-model="pickedBemeubeld">
-                            <label class="radio" for="nietBemeubeld">Nee</label>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Subtype van de woning?</p>
-                            <select class="fieldAgent left" v-model="selectedSubtype" id="subtype">
-                                <option disabled value="">Subtype</option>
-                                <option v-for="(subtype, counter) in this.subtypes" :key="counter">{{subtype.subtype_of_property}}</option>
-                            </select>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Oppervlakte landbouwgrond?</p>
-                            <input class="fieldAgent" placeholder="Oppervlakte landbouwgrond" type="number" min="0" v-model="landbouwOpp">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="column-33">
-                            <p class="placeholder">Keukenapparatuur aanwezig?</p>
-                            <input class="radio" type="radio" id="keuken" value="Ja" v-model="pickedKeuken">
-                            <label class="radio" for="keuken">Ja</label>
-                            <br>
-                            <input class="radio" type="radio" id="nietKeuken" value="Nee" v-model="pickedKeuken">
-                            <label class="radio" for="nietKeuken">Nee</label>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Locatie van de woning?</p>
-                            <select class="fieldAgent left" v-model="selectedLocatie" id="locatie">
-                                <option disabled value="">Locatie</option>
-                                <option v-for="(locationsBelgium, counter) in this.locationsBelgium" :key="counter">{{locationsBelgium.location}}</option>
-                            </select>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Oppervlakte bouwgrond?</p>
-                            <input class="fieldAgent" placeholder="Oppervlakte bouwgrond" type="number" min="0" v-model="bouwgrondOpp">
-                        </div>                    
-                    </div>
-                    <div class="row">
-                        <div class="column-33">
-                            <p class="placeholder">Terras aanwezig?</p>
-                            <input class="radio" type="radio" id="terras" value="Ja" v-model="showTerras">
-                            <label class="radio" for="terras">Ja</label>
-                            <br>
-                            <input class="radio" type="radio" id="nietTerras" value="Nee" v-model="showTerras">
-                            <label class="radio" for="nietTerras">Nee</label>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Staat van de woning?</p>
-                            <select class="fieldAgent left" v-model="selectedStaat" id="staat">
-                                <option disabled value="">Staat</option>
-                                <option v-for="(state, counter) in this.states" :key="counter">{{state.building_state}}</option>
-                            </select>
-                        </div>
-                        <div class="column-33" v-show="pickedType==='Huis'">
-                            <p class="placeholder">Aantal gevels van de woning?</p>
-                            <select class="fieldAgent" v-model="selectedGevels" id="gevels">
-                                <option disabled value="">Aantal gevels</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="column-33">
-                            <p class="placeholder">Tuin aanwezig?</p>
-                            <input class="radio" type="radio" id="tuin" value='Ja' v-model="showTuin">
-                            <label class="radio" for="tuin">Ja</label>
-                            <br>
-                            <input class="radio" type="radio" id="nietTuin" value='Nee' v-model="showTuin">
-                            <label class="radio" for="nietTuin">Nee</label>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Prijs van de woning?</p>
-                            <input class="fieldAgent left" type="number" min="0" placeholder="Prijs" v-model="prijs">
-                        </div>
-                        <div class="column-33" v-show="showTerras==='Ja'">
-                            <p class="placeholder">Oppervlakte terras?</p>
-                            <input class="fieldAgent" placeholder="Oppervlakte terras" type="number" min="0" v-model="terrasOpp">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="column-33">
-                            <p class="placeholder">Haardvuur aanwezig?</p>
-                            <input class="radio" type="radio" id="haardvuur" value="Ja" v-model="pickedHaardvuur">
-                            <label class="radio" for="haardvuur">Ja</label>
-                            <br>
-                            <input class="radio" type="radio" id="nietHaardvuur" value="Nee" v-model="pickedHaardvuur">
-                            <label class="radio" for="nietHaardvuur">Nee</label>
-                        </div>
-                        <div class="column-33">
-                            <p class="placeholder">Aantal kamers?</p>
-                            <input class="fieldAgent left" type="number" placeholder="Aantal kamers" min="0" v-model="kamers">
-                        </div>
-                        <div class="column-33" v-show="showTuin==='Ja'">
-                            <p class="placeholder">Oppervlakte tuin?</p>
-                            <input class="fieldAgent" placeholder="Oppervlakte tuin" type="number" min="0" v-model="tuinOpp">
-                        </div>
-                    </div>
-                    <br><br><br>
-                    <div class="row">
-                        <input class="button-file" type="file" multiple @change="uploadFile" ref="file" accept="image/*" placeholder="Kies je bestand(en)">
-                        <button @click="submitFile()">Send</button>
-                    </div>
+            <div v-if="showForm">
+                <!-- STAP 1 -->
+                <div class="inputform" v-if="showFormStep1">
+                    <h3>Basisinformatie 1/3</h3>
+                    <p class="placeholder">Type woning?</p>
+                    <input class="radio" type="radio" id="appartement" value="Appartement" v-model="pickedType">
+                    <label class="radio" for="appartement">Appartement</label>
+                    <br>
+                    <input class="radio" type="radio" id="huis" value="Huis" v-model="pickedType">
+                    <label class="radio" for="huis">Huis</label>
                     <br><br>
+                    <p class="placeholder">Subtype van de woning?</p>
+                    <select class="fieldAgent left" v-model="selectedSubtype" id="subtype">
+                        <option disabled value="">Subtype</option>
+                        <option v-for="(subtype, counter) in this.subtypes" :key="counter">{{subtype.subtype_of_property}}</option>
+                    </select>
+                    <br><br><br>
                     <div class="errorhandler" v-if="errors.length > 0">
                         <span v-for="error in errors" :key="error">
                             {{error}} <br>
                         </span>
                     </div>
                     <div id="referral">
-                        <button class="button" @click="submit()" >VOEG TOE</button>
+                        <button class="button" @click="naarStap2()">Volgende</button>
                     </div>
-                </form>
+                    <br>
+                    <div class="progress-bar-1"></div>
+                </div>
+                <!-- STAP 2 -->
+                <div class="inputform" v-if="showFormStep2">
+                    <h3>Basisinformatie 2/3</h3>
+                    <p class="placeholder">Locatie van de woning?</p>
+                    <select class="fieldAgent left" v-model="selectedLocatie" id="locatie">
+                        <option disabled value="">Locatie</option>
+                        <option v-for="(locationsBelgium, counter) in this.locationsBelgium" :key="counter">{{locationsBelgium.location}}</option>
+                    </select>
+                    <br><br><br>
+                    <div class="errorhandler" v-if="errors.length > 0">
+                        <span v-for="error in errors" :key="error">
+                            {{error}} <br>
+                        </span>
+                    </div>
+                    <div id="referral">
+                        <button class="link" @click="terugNaarStap1()"> Vorige</button>
+                        <button class="button" @click="naarStap3()">Volgende</button>
+                    </div>
+                    <br>
+                    <div class="progress-bar-2"></div>
+                </div>
+                <!-- STAP 3 -->
+                <div class="inputform" v-if="showFormStep3">
+                    <h3>Basisinformatie 3/3</h3>
+                    <p class="placeholder">Prijs van de woning?</p>
+                    <input class="fieldAgent left" type="number" min="0" placeholder="Prijs" v-model="prijs">
+                    <br><br><br>
+                    <div class="errorhandler" v-if="errors.length > 0">
+                        <span v-for="error in errors" :key="error">
+                            {{error}} <br>
+                        </span>
+                    </div>
+                    <div id="referral">
+                        <button class="link" @click="terugNaarStap2()"> Vorige</button>
+                        <button class="button" @click="naarStap4()">Volgende</button>
+                    </div>
+                    <br>
+                    <div class="progress-bar-3"></div>
+                </div>
+                <!-- STAP 4 -->
+                <div class="inputform" v-if="showFormStep4">
+                    <h3>Gedetailleerde informatie 1/3</h3>
+                    <p class="placeholder">Aantal gevels van de woning?</p>
+                    <select class="fieldAgent" v-model="selectedGevels" id="gevels">
+                        <option disabled value="">Aantal gevels</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                    <br><br>
+                    <p class="placeholder">Staat van de woning?</p>
+                    <select class="fieldAgent" v-model="selectedStaat" id="staat">
+                        <option disabled value="">Staat</option>
+                        <option v-for="(state, counter) in this.states" :key="counter">{{state.building_state}}</option>
+                    </select>
+                    <br><br>
+                    <p class="placeholder">Oppervlakte woning?</p>
+                    <input class="fieldAgent" placeholder="Oppervlakte woning" type="number" min="0" v-model="woningOpp">
+                    <br><br>
+                    <p class="placeholder">Oppervlakte bouwgrond?</p>
+                    <input class="fieldAgent" placeholder="Oppervlakte bouwgrond" type="number" min="0" v-model="bouwgrondOpp">
+                    <br><br>
+                    <p class="placeholder">Oppervlakte landbouwgrond?</p>
+                    <input class="fieldAgent" placeholder="Oppervlakte landbouwgrond" type="number" min="0" v-model="landbouwOpp">
+                    <br><br><br>
+                    <div class="errorhandler" v-if="errors.length > 0">
+                        <span v-for="error in errors" :key="error">
+                            {{error}} <br>
+                        </span>
+                    </div>
+                    <div id="referral">
+                        <button class="link" @click="terugNaarStap3()"> Vorige</button>
+                        <button class="button" @click="naarStap5()">Volgende</button>
+                    </div>
+                    <br>
+                    <div class="progress-bar-4"></div>
+                </div>
+                <!-- STAP 5 -->
+                <div class="inputform" v-if="showFormStep5">
+                    <h3>Gedetailleerde informatie 2/3</h3>
+                    <p class="placeholder">Aantal kamers?</p>
+                    <input class="fieldAgent left" type="number" placeholder="Aantal kamers" min="0" v-model="kamers">
+                    <br><br><br>
+                    <p class="placeholder">Bemeubeld?</p>
+                    <input class="radio" type="radio" id="bemeubeld" value="Ja" v-model="pickedBemeubeld">
+                    <label class="radio" for="bemeubeld">Ja</label>
+                    <br>
+                    <input class="radio" type="radio" id="nietBemeubeld" value="Nee" v-model="pickedBemeubeld">
+                    <label class="radio" for="nietBemeubeld">Nee</label>
+                    <br><br>
+                    <p class="placeholder">Keukenapparatuur aanwezig?</p>
+                    <input class="radio" type="radio" id="keuken" value="Ja" v-model="pickedKeuken">
+                    <label class="radio" for="keuken">Ja</label>
+                    <br>
+                    <input class="radio" type="radio" id="nietKeuken" value="Nee" v-model="pickedKeuken">
+                    <label class="radio" for="nietKeuken">Nee</label>
+                    <br><br>
+                    <p class="placeholder">Haardvuur aanwezig?</p>
+                    <input class="radio" type="radio" id="haardvuur" value="Ja" v-model="pickedHaardvuur">
+                    <label class="radio" for="haardvuur">Ja</label>
+                    <br>
+                    <input class="radio" type="radio" id="nietHaardvuur" value="Nee" v-model="pickedHaardvuur">
+                    <label class="radio" for="nietHaardvuur">Nee</label>
+                    <br><br><br>
+                    <div class="errorhandler" v-if="errors.length > 0">
+                        <span v-for="error in errors" :key="error">
+                            {{error}} <br>
+                        </span>
+                    </div>
+                    <div id="referral">
+                        <button class="link" @click="terugNaarStap4()"> Vorige</button>
+                        <button class="button" @click="naarStap6()">Volgende</button>
+                    </div>
+                    <br>
+                    <div class="progress-bar-5"></div>
+                </div>
+                <!-- STAP 6 -->
+                <div class="inputform" v-if="showFormStep6">
+                    <h3>Gedetailleerde informatie 3/3</h3>
+                    <p class="placeholder">Zwembad aanwezig?</p>
+                    <input class="radio" type="radio" id="zwembad" value="Ja" v-model="pickedZwembad">
+                    <label class="radio" for="zwembad">Ja</label>
+                    <br>
+                    <input class="radio" type="radio" id="nietZwembad" value="Nee" v-model="pickedZwembad">
+                    <label class="radio" for="nietZwembad">Nee</label>
+                    <br><br>
+                    <p class="placeholder">Terras aanwezig?</p>
+                    <input class="radio" type="radio" id="terras" value="Ja" v-model="showTerras">
+                    <label class="radio" for="terras">Ja</label>
+                    <br>
+                    <input class="radio" type="radio" id="nietTerras" value="Nee" v-model="showTerras">
+                    <label class="radio" for="nietTerras">Nee</label>                
+                    <div v-show="showTerras==='Ja'">
+                        <br><br>
+                        <p class="placeholder">Oppervlakte terras?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte terras" type="number" min="0" v-model="terrasOpp">
+                        <br><br>
+                    </div>
+                    <br><br>
+                    <p class="placeholder">Tuin aanwezig?</p>
+                    <input class="radio" type="radio" id="tuin" value='Ja' v-model="showTuin">
+                    <label class="radio" for="tuin">Ja</label>
+                    <br>
+                    <input class="radio" type="radio" id="nietTuin" value='Nee' v-model="showTuin">
+                    <label class="radio" for="nietTuin">Nee</label>
+                    <div v-show="showTuin==='Ja'">
+                        <br><br>
+                        <p class="placeholder">Oppervlakte tuin?</p>
+                        <input class="fieldAgent" placeholder="Oppervlakte tuin" type="number" min="0" v-model="tuinOpp">
+                        <br><br>
+                    </div>
+                    <br><br><br>
+                    <div class="errorhandler" v-if="errors.length > 0">
+                        <span v-for="error in errors" :key="error">
+                            {{error}} <br>
+                        </span>
+                    </div>
+                    <div id="referral">
+                        <button class="link" @click="terugNaarStap5()"> Vorige</button>
+                        <button class="button" @click="naarStap7()">Volgende</button>
+                    </div>
+                    <br>
+                    <div class="progress-bar-6"></div>
+                </div>
+                <!-- STAP 7 -->
+                <div class="inputform" v-if="showFormStep7">
+                    <h3>Afbeeldingen uploaden</h3>
+                    <input class="button-file" type="file" multiple @change="uploadFile" ref="file" accept="image/*" placeholder="Kies je bestand(en)">
+                    <button @click="submitFile()">Send</button>
+                    <br><br><br>
+                    <div class="errorhandler" v-if="errors.length > 0">
+                        <span v-for="error in errors" :key="error">
+                            {{error}} <br>
+                        </span>
+                    </div>
+                    <div id="referral">
+                        <button class="link" @click="terugNaarStap6()"> Vorige</button>
+                        <button class="button" @click="submit()">Voeg toe</button>
+                    </div>
+                    <br>
+                    <div class="progress-bar-7"></div>
+                </div>
             </div>
         </div>
-        <form action="http://127.0.0.1:8000/imageuploader/uploader.php" method="POST" enctype="multipart/form-data">
+
+        <form  enctype="multipart/form-data">
             <div class="row">
                 <input class="button-file" id="files" name="files" type="file" multiple @change="uploadFile" ref="file" accept="image/*" placeholder="Kies je bestand(en)">
                 <button type="submit" @click="submitFile()">Send</button>
@@ -184,7 +253,7 @@
             <div class="column-50-footer logo-footer">
                 <img @click="goToPage('home')" class="logoVolledig" src="../assets/LogoGroot.png" alt="LogoGroot">
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -217,8 +286,8 @@
                 errors:[],
                 showTuin:false,
                 showTerras:false,
-                showForm:true,
                 showSucces:false,
+                showForm:true,
                 showNewHouse:false,
                 houseID:0,
                 isIngelogd:false,
@@ -229,13 +298,23 @@
                 images:[],
                 fileName:'',
                 agentID:'',
-                imageUrls:''
+                imageUrls:'',
+
+                showFormStep1:true,
+                showFormStep2:false,
+                showFormStep3:false,
+                showFormStep4:false,
+                showFormStep5:false,
+                showFormStep6:false,
+                showFormStep7:false
             }
         },
-        
+
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
+
             },
             async getSubtypes() {
                 let response = await fetch("http://127.0.0.1:8000/api/housesSubtype");
@@ -255,55 +334,62 @@
                 console.log(resp)
                 this.locationsBelgium = resp;
             },
-            uploadFile() {
-                this.images = this.$refs.file.files;
-            },
-            submitFile(){
-                var baseUrl = 'http://127.0.0.1:8000/imageuploader/uploads/'
-                for(var i=0; i<this.images.length;i++){
-                    var tempUrl=baseUrl+this.images[i].name+";"
-                    this.imageUrls+=tempUrl
-                }
-                console.log(this.imageUrls)
-            },
-            submit(){
-                //check alles
+            naarStap2(){
+                this.isLoggedIN()
                 this.errors=[];
                 if(!this.pickedType){
                     this.errors.push('Kies het type woning');
                 }
-                if(!this.pickedBemeubeld){
-                    this.errors.push('Duid aan of de woning bemeubeld is');
-                }
-                if(!this.pickedKeuken){
-                    this.errors.push('Duid aan of er keukenapparatuur aanwezig is');
-                }
-                if(!this.showTuin){
-                    this.errors.push('Duid aan of de woning een tuin heeft');
-                }
-                if(!this.showTerras){
-                    this.errors.push('Duid aan of de woning een terras heeft');
-                }
-                if(!this.pickedHaardvuur){
-                    this.errors.push('Duid aan of de woning een haardvuur heeft');
-                }
-                if(!this.pickedZwembad){
-                    this.errors.push('Duid aan of de woning een zwembad heeft');
-                }
                 if(!this.selectedSubtype){
                     this.errors.push('Kies het subtype');
                 }
+                if(this.errors.length==0){
+                    this.showFormStep1=false
+                    this.showFormStep2=true
+                }
+            },
+            terugNaarStap1(){
+                this.showFormStep1=true
+                this.showFormStep2=false
+            },
+            naarStap3(){
+                this.isLoggedIN()
+                this.errors=[];
                 if(!this.selectedLocatie){
                     this.errors.push('Kies de locatie');
                 }
-                if(!this.selectedStaat){
-                    this.errors.push('Kies de staat');
+                if(this.errors.length==0){
+                    this.showFormStep2=false
+                    this.showFormStep3=true
                 }
+            },
+            terugNaarStap2(){
+                this.showFormStep2=true
+                this.showFormStep3=false
+            },
+            naarStap4(){
+                this.isLoggedIN()
+                this.errors=[];
                 if(!this.prijs){
                     this.errors.push('Geef de prijs in');
                 }
-                if(!this.kamers){
-                    this.errors.push('Geef het aantal kamers in');
+                if(this.errors.length==0){
+                    this.showFormStep3=false
+                    this.showFormStep4=true
+                }
+            },
+            terugNaarStap3(){
+                this.showFormStep3=true
+                this.showFormStep4=false
+            },
+            naarStap5(){
+                this.isLoggedIN()
+                this.errors=[];
+                if(!this.selectedGevels){
+                    this.errors.push('Geef het aantal gevels van de woning in')
+                }
+                if(!this.selectedStaat){
+                    this.errors.push('Kies de staat');
                 }
                 if(!this.woningOpp){
                     this.errors.push('Geef de oppervlakte van de woning in');
@@ -314,23 +400,99 @@
                 if(!this.landbouwOpp){
                     this.errors.push('Geef de oppervlakte van de landbouwgrond in');
                 }
-                if(this.showTuin==='Ja'){
-                    if(!this.tuinOpp){
-                        this.errors.push('Geef de oppervlakte van de tuin in')
-                    }
+                if(this.errors.length==0){
+                    this.showFormStep4=false
+                    this.showFormStep5=true
+                }
+            },
+            terugNaarStap4(){
+                this.showFormStep4=true
+                this.showFormStep5=false
+            },
+            naarStap6(){
+                this.isLoggedIN()
+                this.errors=[];
+                if(!this.kamers){
+                    this.errors.push('Geef het aantal kamers in');
+                }
+                if(!this.pickedBemeubeld){
+                    this.errors.push('Duid aan of de woning bemeubeld is');
+                }
+                if(!this.pickedKeuken){
+                    this.errors.push('Duid aan of er keukenapparatuur aanwezig is');
+                }
+                if(!this.pickedHaardvuur){
+                    this.errors.push('Duid aan of de woning een haardvuur heeft');
+                }
+                if(this.errors.length==0){
+                    this.showFormStep5=false
+                    this.showFormStep6=true
+                }
+            },
+            terugNaarStap5(){
+                this.showFormStep5=true
+                this.showFormStep6=false
+            },
+            naarStap7(){
+                this.isLoggedIN()
+                this.errors=[];
+                if(!this.pickedZwembad){
+                    this.errors.push('Duid aan of de woning een zwembad heeft');
+                }
+                if(!this.showTerras){
+                    this.errors.push('Duid aan of de woning een terras heeft');
                 }
                 if(this.showTerras==='Ja'){
                     if(!this.terrasOpp){
                         this.errors.push('Geef de oppervlakte van het terras in')
                     }
                 }
-                if(this.pickedType==='Huis'){
-                    if(!this.selectedGevels){
-                        this.errors.push('Geef het aantal gevels van de woning in')
+                if(!this.showTuin){
+                    this.errors.push('Duid aan of de woning een tuin heeft');
+                }
+                if(this.showTuin==='Ja'){
+                    if(!this.tuinOpp){
+                        this.errors.push('Geef de oppervlakte van de tuin in')
                     }
                 }
                 if(this.errors.length==0){
-                    this.isLoggedIN()
+                    this.showFormStep6=false
+                    this.showFormStep7=true
+                }
+            },
+            terugNaarStap6(){
+                this.showFormStep6=true
+                this.showFormStep7=false
+            },
+            uploadFile() {
+                this.images = this.$refs.file.files;
+            },
+            async submitFile(){
+                var baseUrl = 'http://127.0.0.1:8000/api/uploadFile/'
+                // for(var i=0; i<this.images.length;i++){
+                //     console.log("hello")
+                //     var tempUrl=baseUrl+this.images[i].name+";"
+                //     this.imageUrls+=tempUrl
+                //     console.log(this.imageUrls)
+                    try{
+                        let requestOptions={
+                            method: "POST",
+                            headers: { "Content-Type": "multipart/form-data" }
+                        }
+    
+                        let response = await fetch( 'http://127.0.0.1:8000/api/uploadFile/'+ this.images[0].name, requestOptions)
+                        let resp = await response.json();
+                        console.log(resp)
+                    } catch(error){
+                        console.log(error)
+                    }
+                // }
+
+                console.log(this.imageUrls)
+            },
+            submit(){
+                this.isLoggedIN()
+                if(this.errors.length==0){
                     this.postHouse()
                     // this.postSpecification()
                     this.newHouse()
@@ -370,7 +532,7 @@
                             area: this.woningOpp
                         })
                     }
-                    
+
                     let response = await fetch("http://127.0.0.1:8000/api/addHouse?", requestOptions)
                     let houseID = await response.json();
                     console.log(houseID)
@@ -378,7 +540,7 @@
                 } catch(error){
                     console.log(error)
                 }
-            },     
+            },
             async postSpecification(houseID){
                 if(this.pickedKeuken==="Nee"){
                     this.pickedKeuken=0
@@ -479,21 +641,35 @@
                 this.showSucces=false,
                 this.showNewHouse=false,
                 this.showSuccesKoper=false,
-                this.showSuccesMakelaar=false
+                this.showSuccesMakelaar=false,
+                this.showFormStep1=true,
+                this.showFormStep2=false,
+                this.showFormStep3=false,
+                this.showFormStep4=false,
+                this.showFormStep5=false,
+                this.showFormStep6=false,
+                this.showFormStep7=false
             },
             isLoggedIN(){
                 const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
                 const rol = ('; '+document.cookie).split("; rol=").pop().split(';')[0];
                 console.log(ingelogd +' '+ rol)
-                if(ingelogd=='true'){
-                    this.isIngelogd=true
-                    this.isNotIngelogd=false
-                }
-                else{
-                    this.isIngelogd=false
-                    this.isNotIngelogd=true
-                }
-                if(ingelogd!='true' && rol!="makelaar"){
+                try{
+                    if(ingelogd=='true'){
+                        this.isIngelogd=true
+                        this.isNotIngelogd=false
+                    }
+                    else{
+                        this.isIngelogd=false
+                        this.isNotIngelogd=true
+                    }
+                    if(ingelogd!='true' && rol!="makelaar"){
+                        alert('Je bent niet geauthoriseerd om deze pagina te bekijken.\nMeld je aan of neem contact op met info@immokompas.be')
+                        this.goToPage('login')
+                    }
+
+                }catch(error){
+                    console.log(error)
                     alert('Je bent niet geauthoriseerd om deze pagina te bekijken.\nMeld je aan of neem contact op met info@immokompas.be')
                     this.goToPage('login')
                 }
@@ -517,7 +693,7 @@
             this.getSubtypes();
             this.getStates();
             this.getLocationsBelgium();
-        },  
-    
+        },
+
 }
 </script>

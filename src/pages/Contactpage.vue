@@ -68,6 +68,7 @@
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
             },
             submit(){
                 this.errors=[];

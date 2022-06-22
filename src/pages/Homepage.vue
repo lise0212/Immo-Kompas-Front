@@ -115,6 +115,7 @@
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
             },
             isLoggedIN(){
                 const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];

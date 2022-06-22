@@ -12,8 +12,8 @@
                         <li data-label="Makelaar">{{house.name}}</li>                        
                         <!-- <li data-label="Makelaar">{{house.id}}</li> -->
                         <li><a class="contact" :href="'mailto:'+house.email">Contacteer de makelaar</a></li>
-                        <li v-if="showAddFavorite"><button class="like" @click="addFavorite()"><span class="heart">❤</span> Voeg toe aan favorieten</button></li>
-                        <li v-else-if="showAdded"><button class="liked"><span class="heart">❤</span> Toegevoegd aan favorieten</button></li>
+                        <!-- <li v-if="showAddFavorite"><button class="like" @click="addFavorite({house.id})"><span class="heart">❤</span> Voeg toe aan favorieten</button></li>
+                        <li v-else-if="showAdded"><button class="liked"><span class="heart">❤</span> Toegevoegd aan favorieten</button></li> -->
                     </div>
                 </div>     
             </div>

@@ -20,6 +20,7 @@
                 <p>Je wordt zo dadelijk doorgestuurd naar de pagina om een match te zoeken.</p>
             </div>
             <div class="inputform" v-show="showForm===true">
+                <h3>Registreer</h3>
                 <p class="placeholder">Naam</p>
                 <input class="field" type="text" placeholder="Naam" v-model="naam" required>
                 <br><br>
@@ -85,6 +86,7 @@
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
             },
             async submit(){
                 this.errors=[];

@@ -24,24 +24,12 @@
                 <p>Je wordt zo dadelijk doorgestuurd naar de pagina om een zoekertje te plaatsen.</p>
             </div>
             <div class="inputform" v-if="showForm">
+                <h3>Login</h3>
                 <p class="placeholder">E-mailadres</p>
                 <input class="field" type="email" placeholder="E-mailadres" v-model="email" required >
                 <br><br>
                 <p class="placeholder">Paswoord</p>
-                <!-- <div class="input-group"> -->
                     <input  class="field" type="password" placeholder="Paswoord" v-model="paswoord" required>
-                    <!-- <button class="input-group-icon" @click="togglePassword">
-                        {{ toggleBtnIcon }}
-                    </button>
-                </div> -->
-                <!-- <input v-else class="field" type="password" placeholder="Paswoord" v-model="password" required //v-if="showPassword"> -->
-                <!--<div class="control">
-                    <button class="button" @click="toggleShow">
-                        <span class="icon is-small is-right">
-                            <i class="fas" :class="{ 'fa-eye-slash': showPassword, 'fa-eye': !showPassword }"></i>
-                        </span>
-                    </button>
-                </div> -->
                 <br><br><br>
                 <div class="errorhandler" v-if="errors.length > 0">
                     <span v-for="error in errors" :key="error">
@@ -92,6 +80,7 @@
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
             },
             togglePassword(){
                 this.showPassword = !this.showPassword;
@@ -123,7 +112,7 @@
                     this.userName= this.user.name
                     this.userRole = this.user.role
                     this.userID = this.user.id
-                    if(this.user==='Fail'){
+                    if(this.user=='Fail'){
                         this.errors.push('Controleer of je het juiste emailadres en paswoord gebruikt hebt en probeer het opnieuw')
                     }
                     else{

@@ -11,7 +11,8 @@
                         <li data-label="Prijs">€ {{house.price}}</li>
                         <li data-label="Makelaar">{{house.name}}</li>
                         <li><a class="contact" :href="'mailto:'+house.email">Contacteer de makelaar</a></li>
-                        <li><button class="like"><span class="heart">❤</span> Voeg toe aan favorieten</button></li>
+                        <!-- <li><button class="like"><span class="heart">❤</span> Voeg toe aan favorieten</button></li> -->
+                        <!-- <li v-else-if="showAdded"><button class="liked"><span class="heart">❤</span> Toegevoegd aan favorieten</button></li> --> 
                     </div>
                 </div>       
             </div>

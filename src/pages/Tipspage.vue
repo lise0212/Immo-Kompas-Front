@@ -110,6 +110,10 @@
                 <br><br>
                 <b>Tip: </b>laat je niet opjagen, zorg ervoor dat je alles goed bekeken hebt.
             </p>
+            <div >
+                <button class="button" @click="goToPage('buyer')">Match zoeken</button>
+
+            </div>
         </div>
 
         
@@ -141,6 +145,7 @@
         methods: {
             goToPage(page){
                 this.$emit("change-page", page);
+                window.scrollTo(0, 0);
             },
             isLoggedIN(){
                 const ingelogd = ('; '+document.cookie).split("; ingelogd=").pop().split(';')[0];
